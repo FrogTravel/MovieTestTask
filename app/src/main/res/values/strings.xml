@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MovieTestTask</string>
+    <string name="show_only_2020">Показать только за 2020 год</string>
+</resources>
