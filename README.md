@@ -3,6 +3,7 @@
 - Clean Architecture 
 - ViewModel
 - LiveData 
+- AndroidX
 - Kotlin
 - Retrofit 
 - Room
