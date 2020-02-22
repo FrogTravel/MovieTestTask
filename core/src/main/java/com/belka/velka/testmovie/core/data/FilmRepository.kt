@@ -6,7 +6,7 @@ class FilmRepository(
     private val localDataSource: LocalDataSource,
     private val webDataSource: RemoteDataSource
 ) {
-    var films = listOf<Film>()
+    private var films = listOf<Film>()
 
     private suspend fun loadFilms() {
         if (films.isEmpty()) {//it might be already cached

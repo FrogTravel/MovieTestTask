@@ -7,7 +7,7 @@ import com.belka.velka.testmovie.core.domain.Film
 class ApiFilmsDataSource : RemoteDataSource {
     val api = API.getAPI()
 
-    var films = listOf<Film>()
+    private var films = listOf<Film>()
 
     private fun loadFilms() {
         if (films.isEmpty()) {
