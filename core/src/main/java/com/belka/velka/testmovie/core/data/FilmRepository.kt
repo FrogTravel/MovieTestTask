@@ -10,10 +10,8 @@ class FilmRepository(
 
     private suspend fun loadFilms() {
         if (films.isEmpty()) {//it might be already cached
-            println("FILMS IS EMPTY IN VARIABLE")
             films = localDataSource.getAllFilms()
             if (films.isEmpty()) {//if there is nothing in DB then load from server
-                println("FILMS IS EMPTY IN DB")
                 films = webDataSource.getAllFilms()
                 localDataSource.saveFilms(films)
             }
