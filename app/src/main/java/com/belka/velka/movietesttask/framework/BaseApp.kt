@@ -1,6 +1,8 @@
 package com.belka.velka.movietesttask.framework
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AlertDialog
 import com.belka.velka.movietesttask.R
 import com.belka.velka.movietesttask.framework.datasource.ApiFilmsDataSource
@@ -16,36 +18,26 @@ class BaseApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-//        if(!isInternetAvailable()){
-//            AlertDialog.Builder(applicationContext)
-//                .setTitle(R.string.internet_connection_error_title)
-//                .setMessage(R.string.internet_connection_error_body)
-//                .setPositiveButton(android.R.string.ok
-//                ) { _, _ -> onTerminate()}.show()
-//        }else {
-            val filmRepository = FilmRepository(
-                RoomFilmsDataSource(
-                    this
-                ),
-                ApiFilmsDataSource()
-            )
+        val filmRepository = FilmRepository(
+            RoomFilmsDataSource(
+                this
+            ),
+            if(isInternetAvailable()) ApiFilmsDataSource() else null
+        )
 
-            ViewModelFactory.inject(
-                this, Interactors(
-                    GetAllFilms(filmRepository),
-                    GetLatestFilms(filmRepository)
-                )
+        ViewModelFactory.inject(
+            this, Interactors(
+                GetAllFilms(filmRepository),
+                GetLatestFilms(filmRepository)
             )
-//        }
+        )
+
     }
 
-    fun isInternetAvailable(): Boolean{
-//        return (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo.isConnected
-        return try{
-            val ipAddr = InetAddress.getAllByName("google.com")
-            !ipAddr.equals("")
-        }catch (e: Exception){
-            false
-        }
+    fun isInternetAvailable(): Boolean {
+        val cm = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
     }
+
+
 }

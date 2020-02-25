@@ -10,13 +10,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.belka.velka.movietesttask.R
 import com.belka.velka.movietesttask.framework.ViewModelFactory
 import com.belka.velka.testmovie.core.domain.Film
 import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.Exception
-import java.net.InetAddress
 
 class MainView : AppCompatActivity() {
     private lateinit var layoutManager: GridLayoutManager
@@ -26,17 +23,11 @@ class MainView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (isInternetAvailable()) {
-            initializeViews()
-        } else {
+        if (!isInternetAvailable()) {
             showNoInternetDialog()
         }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("MVDEB", "onResume")
+        initializeViews()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -51,7 +42,7 @@ class MainView : AppCompatActivity() {
 
         model.loadFilms()
 
-        adapter = FilmAdapter(model.films.value ?: arrayListOf<Film>())
+        adapter = FilmAdapter(model.films.value ?: emptyList())
         layoutManager = GridLayoutManager(this, resources.getInteger(R.integer.number_of_columns))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
@@ -59,6 +50,7 @@ class MainView : AppCompatActivity() {
         model.films.observe(this,
             Observer<List<Film>> {
                 adapter.updateList(it)
+                recyclerView.scrollToPosition(0)
             })
 
 
@@ -68,13 +60,8 @@ class MainView : AppCompatActivity() {
     }
 
     fun isInternetAvailable(): Boolean {
-        return (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo.isConnected
-//        return try{
-//            val ipAddr = InetAddress.getAllByName("google.com")
-//            !ipAddr.equals("")
-//        }catch (e: Exception){
-//            false
-//        }
+        val cm = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
     }
 
     fun showNoInternetDialog() {
@@ -83,6 +70,6 @@ class MainView : AppCompatActivity() {
             .setMessage(R.string.internet_connection_error_body)
             .setPositiveButton(
                 android.R.string.ok
-            ) { _, _ -> finish() }.show()
+            ) { _, _ -> }.show()
     }
 }
