@@ -42,6 +42,6 @@ class FilmAdapter(var films: List<Film>) : RecyclerView.Adapter<FilmAdapter.View
 
         override fun getNewListSize() = newFilm.size
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = oldFilms[oldItemPosition].id == newFilm[newItemPosition].id
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = oldFilms[oldItemPosition].poster == newFilm[newItemPosition].poster
     }
 }
