@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">MovieTestTask</string>
     <string name="show_only_2020">Показать только за 2020 год</string>
+    <string name="internet_connection_error_title">Ошибка подключения к интернету</string>
+    <string name="internet_connection_error_body">Ошибка подключения к интернету</string>
 </resources>

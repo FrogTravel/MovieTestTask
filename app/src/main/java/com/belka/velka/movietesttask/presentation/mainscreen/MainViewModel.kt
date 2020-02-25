@@ -5,23 +5,27 @@ import androidx.lifecycle.*
 import com.belka.velka.movietesttask.framework.BaseViewModel
 import com.belka.velka.movietesttask.framework.datasource.db.Interactors
 import com.belka.velka.testmovie.core.domain.Film
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainViewModel(application: Application, interactors: Interactors) :
     BaseViewModel(application, interactors) {
 
     val films = MutableLiveData<List<Film>>()
 
-    fun loadFilms(){
-        GlobalScope.launch {
-            films.postValue(interactors.getAllFilms())
+    fun loadFilms() {
+        viewModelScope.launch {
+            withContext(Dispatchers.Default){
+                films.postValue(interactors.getAllFilms())
+            }
         }
     }
-    
-    fun loadLatestFilms(){
-        GlobalScope.launch {
-            films.postValue(interactors.getLatestFilms())
+
+
+    fun loadLatestFilms() {
+        viewModelScope.launch {
+            withContext(Dispatchers.Default){
+                films.postValue(interactors.getLatestFilms())
+            }
         }
     }
 }

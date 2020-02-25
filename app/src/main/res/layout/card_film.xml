@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         tools:srcCompat="@tools:sample/avatars"
         android:layout_marginRight="@dimen/between_film_space"
-        android:layout_marginBottom="@dimen/between_film_space"/>
+        android:layout_marginBottom="@dimen/between_film_space"
+        android:adjustViewBounds="true"/>
 
 </LinearLayout>
